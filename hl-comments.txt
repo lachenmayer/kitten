@@ -1,0 +1,46 @@
+# 2019-05-26
+
+attempted to implement first advent of code (2018), immediate roadblocks:
+
+- no string split/join, so had to implement that myself (great way to get started!)
+- second part of the exercise requires some kind of set/map/dict - none available
+
+so as an exercise, tried to implement clojure-style HAMT to use as a hash map, mainly based on:
+
+- https://github.com/exclipy/pdata/blob/master/Data/HamtMap.hs
+- https://github.com/mattbierner/hamt/blob/master/lib/hamt.js
+
+hiccups so far:
+
+- destructuring in case statements would make everything a lot nicer
+  ie., you see a lot of this kind of code in the prelude:
+
+      match (xs head_tail)
+      case some:
+        unpair -> h, t;
+        ...
+
+  would be nice if you could destructure that somehow, not sure how that'd work...
+  in general, there seems to be no good way to generically get values out of ADT constructors?
+- `do` operator is not documented - but described perfectly here: https://github.com/evincarofautumn/kitten/issues/188
+
+    Currently, do (f) { x } is desugared to { x } f, that is, it lets you use a combinator like a flow control construct:
+
+    ```
+    xs do (each):
+      (* 42) say
+    ```
+
+  super awesome operator, really makes code a lot clearer
+- no generic traits, ie. `show` for generic list where element type is shown
+- can't get char code from chars - implemented native char_to_int myself
+  (seems to have been an intrinsic in the C-based compiler (kitten.c))
+- no popcount (bit count / hamming weight) - implemented natively myself
+- better syntax for constants
+  (seems to have been implemented at some point https://github.com/evincarofautumn/kitten/commit/e42c4283703f2f146fd8e20e0152645a9a1267dd but doesn't exist anymore?)
+- i tried to name things with a _ prefix & that doesn't work for some reason - probably for a good reason, but was confusing
+- can't automatically derive value equality (=) for ADTs - i get these errors:
+
+    kitten: I can't find an instantiation of '_::=': '_::=::<_::hash_map::HashMap<V>>'
+
+  when trying to do any kind of equality check in tests, even for trivial constructors with no values

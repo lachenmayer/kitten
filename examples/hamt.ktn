@@ -1,0 +1,107 @@
+vocab hash_map:
+  //
+  // "public" interface
+  //
+
+  define new<V> (-> HashMap<V>):
+    empty
+
+  define insert<V> (HashMap<V>, List<Char>, V -> HashMap<V>):
+    some modify empty from_optional
+
+  define delete<V> (HashMap<V>, List<Char> -> HashMap<V>):
+    none modify empty from_optional
+
+  define get<V> (HashMap<V>, List<Char> -> Optional<V>):
+    -> map, key;
+    match (map)
+    case leaf -> hash, node_key, value:
+      if (key = node_key): value some
+      else: none
+    // TODO other node types
+    else: none
+
+  define singleton<V> (List<Char>, V -> HashMap<V>):
+    -> k, v;
+    k hash k v leaf
+
+  define is_empty<V> (HashMap<V> -> Bool):
+    match
+    case empty: true
+    else: false
+
+  //
+  // implementation
+  //
+
+  type HashMap<V>:
+    case empty
+    case leaf(Int32 /* hash */, List<Char>, V)
+    case hash_collision(Int32 /* hash */, List<Pair<List<Char>, V>>)
+    case bitmap_indexed(Int32 /* bitmap */, List<HashMap<List<Char>, V>> /* children */)
+    case array(Int32 /* number of children */, List<HashMap<List<Char>, V>> /* children */)
+
+  define size (-> Int32): 5
+  define bucket_size (-> Int32): 32 // 2 ^ 5
+  define hash_mask (-> Int32): bucket_size - 1
+  define max_index_node (-> Int32): 16
+  define min_array_node (-> Int32): 8
+
+  define hash (List<Char> -> Int32):
+    0 do (fold_left) -> h, c: ((h << 5) - h) + (c to_int)
+
+  define mask(Int32 /* hash */, Int32 /* shift */ -> Int32):
+    (>>) & hash_mask
+
+  define to_bitmap(Int32 -> Int32):
+    1 (<<)
+
+  define from_bitmap(Int32, Int32 -> Int32):
+    -> bitmap, bit;
+    (bitmap & (bit - 1)) pop_count
+
+  // some = insert value
+  // none = delete
+  define modify<V> (HashMap<V>, List<Char>, Optional<V> -> Optional<HashMap<V>>):
+    -> map, key, op;
+    match (map)
+    case empty:
+      match (op)
+      case some -> value: key value singleton some
+      case none: none // delete node
+    else: map some // TODO
+
+  //
+  // tests
+  //
+
+  define test_is_empty (-> +Fail):
+    "empty is empty incorrect" { empty is_empty } assert
+    "leaf is not empty incorrect" { 0 "" "foo" leaf is_empty not } assert
+
+  define test_hash (-> +Fail):
+    "hash value incorrect" { "some string" hash = 1395333309 } assert
+
+  define test_mask (-> +Fail):
+    // from http://blog.higher-order.net/2009/09/08/understanding-clojures-persistenthashmap-deftwice.html
+    "mask incorrect" { 1258 5 mask = 7 } assert
+
+  define test_insert (-> +Fail):
+    "can insert value to empty map" {
+      new "foo" "bar" insert "foo" get "?" from_some = "bar"
+    } assert
+
+  define test_delete (-> +Fail):
+    "can delete value from empty" {  new "foo" delete = empty } assert
+    "can delete value from leaf" {
+      "foo" "bar" singleton "foo" delete = empty
+    } assert
+
+  define test (-> +Fail):
+    test_is_empty
+    test_hash
+    test_mask
+    test_insert
+    test_delete
+
+hash_map::test

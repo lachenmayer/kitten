@@ -1,0 +1,64 @@
+//
+// prelude
+//
+
+define sum (List<Int32> -> Int32):
+  0 do (fold_left) -> s, n: s + n
+
+define join (List<List<Char>>, List<Char> -> List<Char>):
+  -> separator;
+  do (map_concat) -> x: [x, separator]
+  init [] from_optional
+  concat
+
+instance show (List<Int32> -> List<Char>):
+  -> xs;
+  "[" + xs \show map ", " join + "]"
+
+define read_or_fail (List<Char> -> Int32 +Fail):
+  read "should be a number" from_some
+
+define read_number (List<Char> -> Int32 +Fail):
+  -> number_str;
+  match (number_str head_tail)
+  case some:
+    unpair -> maybe_sign, maybe_number;
+    if (maybe_sign = '+'):
+      maybe_number read_or_fail
+    else:
+      number_str read_or_fail
+  case none:
+    "should be a number" fail
+
+define split (List<Char>, Char -> List<List<Char>>):
+  -> separator;
+  [""] do (fold_left) -> splits, char:
+    if (char = separator):
+      splits "" append
+    else:
+      match (splits init_last)
+      case some:
+        unpair -> previous_splits, current_split;
+        previous_splits
+        current_split char append
+        append
+      // none unreachable
+
+define split_lines (List<Char> -> List<List<Char>>):
+  '\n' split
+
+//
+// 1
+//
+
+define advent_1_1 (List<Char> -> Int32 +Fail):
+  split_lines
+  \read_number map
+  sum
+
+define advent_1_2 (List<Char> -> Int32 +Fail):
+  // TODO
+  drop 0
+
+"advent/1.input" read_file
+advent_1_2 say
