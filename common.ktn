@@ -125,6 +125,7 @@ vocab kitten {
   intrinsic xor_int8 (Int8, Int8 -> Int8)
   intrinsic shl_int8 (Int8, Int32 -> Int8)
   intrinsic rol_int8 (Int8, Int32 -> Int8)
+  intrinsic pop_count_int8 (Int8 -> Int8)
 
   intrinsic not_int16 (Int16 -> Int16)
   intrinsic or_int16  (Int16, Int16 -> Int16)
@@ -132,6 +133,7 @@ vocab kitten {
   intrinsic xor_int16 (Int16, Int16 -> Int16)
   intrinsic shl_int16 (Int16, Int32 -> Int16)
   intrinsic rol_int16 (Int16, Int32 -> Int16)
+  intrinsic pop_count_int16 (Int16 -> Int16)
 
   intrinsic not_int32 (Int32 -> Int32)
   intrinsic or_int32  (Int32, Int32 -> Int32)
@@ -139,6 +141,7 @@ vocab kitten {
   intrinsic xor_int32 (Int32, Int32 -> Int32)
   intrinsic shl_int32 (Int32, Int32 -> Int32)
   intrinsic rol_int32 (Int32, Int32 -> Int32)
+  intrinsic pop_count_int32 (Int32 -> Int32)
 
   intrinsic not_int64 (Int64 -> Int64)
   intrinsic or_int64  (Int64, Int64 -> Int64)
@@ -146,6 +149,7 @@ vocab kitten {
   intrinsic xor_int64 (Int64, Int64 -> Int64)
   intrinsic shl_int64 (Int64, Int32 -> Int64)
   intrinsic rol_int64 (Int64, Int32 -> Int64)
+  intrinsic pop_count_int64 (Int64 -> Int64)
 
   // Signed integer comparisons.
 
@@ -215,6 +219,7 @@ vocab kitten {
   intrinsic xor_uint8 (UInt8, UInt8 -> UInt8)
   intrinsic shl_uint8 (UInt8, Int32 -> UInt8)
   intrinsic rol_uint8 (UInt8, Int32 -> UInt8)
+  intrinsic pop_count_uint8 (UInt8 -> UInt8)
 
   intrinsic not_uint16 (UInt16 -> UInt16)
   intrinsic or_uint16  (UInt16, UInt16 -> UInt16)
@@ -222,6 +227,7 @@ vocab kitten {
   intrinsic xor_uint16 (UInt16, UInt16 -> UInt16)
   intrinsic shl_uint16 (UInt16, Int32 -> UInt16)
   intrinsic rol_uint16 (UInt16, Int32 -> UInt16)
+  intrinsic pop_count_uint16 (UInt16 -> UInt16)
 
   intrinsic not_uint32 (UInt32 -> UInt32)
   intrinsic or_uint32  (UInt32, UInt32 -> UInt32)
@@ -229,6 +235,7 @@ vocab kitten {
   intrinsic xor_uint32 (UInt32, UInt32 -> UInt32)
   intrinsic shl_uint32 (UInt32, Int32 -> UInt32)
   intrinsic rol_uint32 (UInt32, Int32 -> UInt32)
+  intrinsic pop_count_uint32 (UInt32 -> UInt32)
 
   intrinsic not_uint64 (UInt64 -> UInt64)
   intrinsic or_uint64  (UInt64, UInt64 -> UInt64)
@@ -236,6 +243,7 @@ vocab kitten {
   intrinsic xor_uint64 (UInt64, UInt64 -> UInt64)
   intrinsic shl_uint64 (UInt64, Int32 -> UInt64)
   intrinsic rol_uint64 (UInt64, Int32 -> UInt64)
+  intrinsic pop_count_uint64 (UInt64 -> UInt64)
 
   // Unsigned integer comparisons.
 
@@ -530,6 +538,17 @@ instance |>> (UInt8, Int32 -> UInt8) { neg _::kitten::rol_uint8 }
 instance |>> (UInt16, Int32 -> UInt16) { neg _::kitten::rol_uint16 }
 instance |>> (UInt32, Int32 -> UInt32) { neg _::kitten::rol_uint32 }
 instance |>> (UInt64, Int32 -> UInt64) { neg _::kitten::rol_uint64 }
+
+trait pop_count <T> (T -> T)
+
+instance pop_count (Int8 -> Int8) { _::kitten::pop_count_int8 }
+instance pop_count (Int16 -> Int16) { _::kitten::pop_count_int16 }
+instance pop_count (Int32 -> Int32) { _::kitten::pop_count_int32 }
+instance pop_count (Int64 -> Int64) { _::kitten::pop_count_int64 }
+instance pop_count (UInt8 -> UInt8) { _::kitten::pop_count_uint8 }
+instance pop_count (UInt16 -> UInt16) { _::kitten::pop_count_uint16 }
+instance pop_count (UInt32 -> UInt32) { _::kitten::pop_count_uint32 }
+instance pop_count (UInt64 -> UInt64) { _::kitten::pop_count_uint64 }
 
 trait pi<T> (-> T)
 

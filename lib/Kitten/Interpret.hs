@@ -330,6 +330,7 @@ interpret dictionary mName mainArgs stdin' stdout' _stderr' initialStack = do
       "xor_int8" -> binaryInt8 xor
       "shl_int8" -> binaryInt8Int shift
       "rol_int8" -> binaryInt8Int rotate
+      "pop_count_int8" -> unaryInt8 $ fromIntegral . popCount
 
       "not_int16" -> unaryInt16 complement
       "or_int16"  -> binaryInt16 (.|.)
@@ -337,6 +338,7 @@ interpret dictionary mName mainArgs stdin' stdout' _stderr' initialStack = do
       "xor_int16" -> binaryInt16 xor
       "shl_int16" -> binaryInt16Int shift
       "rol_int16" -> binaryInt16Int rotate
+      "pop_count_int16" -> unaryInt16 $ fromIntegral . popCount
 
       "not_int32" -> unaryInt32 complement
       "or_int32"  -> binaryInt32 (.|.)
@@ -344,6 +346,7 @@ interpret dictionary mName mainArgs stdin' stdout' _stderr' initialStack = do
       "xor_int32" -> binaryInt32 xor
       "shl_int32" -> binaryInt32Int shift
       "rol_int32" -> binaryInt32Int rotate
+      "pop_count_int32" -> unaryInt32 $ fromIntegral . popCount
 
       "not_int64" -> unaryInt64 complement
       "or_int64"  -> binaryInt64 (.|.)
@@ -351,6 +354,7 @@ interpret dictionary mName mainArgs stdin' stdout' _stderr' initialStack = do
       "xor_int64" -> binaryInt64 xor
       "shl_int64" -> binaryInt64Int shift
       "rol_int64" -> binaryInt64Int rotate
+      "pop_count_int64" -> unaryInt64 $ fromIntegral . popCount
 
       "lt_int8" -> boolInt8 (<)
       "gt_int8" -> boolInt8 (>)
@@ -414,6 +418,7 @@ interpret dictionary mName mainArgs stdin' stdout' _stderr' initialStack = do
       "xor_uint8" -> binaryUInt8 xor
       "shl_uint8" -> binaryUInt8Int shift
       "rol_uint8" -> binaryUInt8Int rotate
+      "pop_count_uint8" -> unaryUInt8 $ fromIntegral . popCount
 
       "not_uint16" -> unaryUInt16 complement
       "or_uint16"  -> binaryUInt16 (.|.)
@@ -421,6 +426,7 @@ interpret dictionary mName mainArgs stdin' stdout' _stderr' initialStack = do
       "xor_uint16" -> binaryUInt16 xor
       "shl_uint16" -> binaryUInt16Int shift
       "rol_uint16" -> binaryUInt16Int rotate
+      "pop_count_uint16" -> unaryUInt16 $ fromIntegral . popCount
 
       "not_uint32" -> unaryUInt32 complement
       "or_uint32"  -> binaryUInt32 (.|.)
@@ -428,6 +434,7 @@ interpret dictionary mName mainArgs stdin' stdout' _stderr' initialStack = do
       "xor_uint32" -> binaryUInt32 xor
       "shl_uint32" -> binaryUInt32Int shift
       "rol_uint32" -> binaryUInt32Int rotate
+      "pop_count_uint32" -> unaryUInt32 $ fromIntegral . popCount
 
       "not_uint64" -> unaryUInt64 complement
       "or_uint64"  -> binaryUInt64 (.|.)
@@ -435,6 +442,7 @@ interpret dictionary mName mainArgs stdin' stdout' _stderr' initialStack = do
       "xor_uint64" -> binaryUInt64 xor
       "shl_uint64" -> binaryUInt64Int shift
       "rol_uint64" -> binaryUInt64Int rotate
+      "pop_count_uint64" -> unaryUInt64 $ fromIntegral . popCount
 
       "lt_uint8" -> boolUInt8 (<)
       "gt_uint8" -> boolUInt8 (>)
