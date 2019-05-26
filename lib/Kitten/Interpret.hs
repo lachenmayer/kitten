@@ -21,6 +21,7 @@ module Kitten.Interpret
 import Control.Exception (ArithException(..), catch)
 import Control.Exception (Exception, throwIO)
 import Data.Bits
+import Data.Char (ord)
 import Data.Fixed (mod')
 import Data.Foldable (toList)
 import Data.IORef (newIORef, modifyIORef', readIORef, writeIORef)
@@ -469,6 +470,7 @@ interpret dictionary mName mainArgs stdin' stdout' _stderr' initialStack = do
       "ge_char" -> boolChar (>=)
       "eq_char" -> boolChar (==)
       "ne_char" -> boolChar (/=)
+      "char_to_int" -> charToInt
 
       "neg_float32" -> unaryFloat32 negate
       "add_float32" -> binaryFloat32 (+)
@@ -905,6 +907,12 @@ interpret dictionary mName mainArgs stdin' stdout' _stderr' initialStack = do
         Character y ::: Character x ::: r <- readIORef stackRef
         let !result = fromEnum $ f x y
         writeIORef stackRef $ Algebraic (ConstructorIndex result) [] ::: r
+
+      charToInt :: IO ()
+      charToInt = do
+        Character x ::: r <- readIORef stackRef
+        let !result = fromIntegral $ ord x
+        writeIORef stackRef $ Int32 result ::: r
 
       unaryFloat32 :: (Float -> Float) -> IO ()
       unaryFloat32 f = do

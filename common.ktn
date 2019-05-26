@@ -273,6 +273,7 @@ vocab kitten {
   intrinsic ge_char (Char, Char -> Bool)
   intrinsic eq_char (Char, Char -> Bool)
   intrinsic ne_char (Char, Char -> Bool)
+  intrinsic char_to_int (Char -> Int32)
 
   // Floating-point arithmetic.
 
@@ -729,6 +730,7 @@ instance <= (Char, Char -> Bool) { _::kitten::le_char }
 instance >= (Char, Char -> Bool) { _::kitten::ge_char }
 instance = (Char, Char -> Bool) { _::kitten::eq_char }
 instance <> (Char, Char -> Bool) { _::kitten::ne_char }
+instance to_int (Char -> Int32) { _::kitten::char_to_int }
 
 instance < (Float32, Float32 -> Bool) { _::kitten::lt_float32 }
 instance > (Float32, Float32 -> Bool) { _::kitten::gt_float32 }
